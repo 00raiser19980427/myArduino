@@ -4,10 +4,6 @@
 #define ENC_B 3
 #define timer_action 1000
 
-
-//#define KP 300
-//#define KI 10
-//#define KD 0
 #define KP 80
 #define KI 1200
 #define KD 0.003
