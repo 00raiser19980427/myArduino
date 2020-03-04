@@ -2,10 +2,10 @@
 #include "encoder.h"
 
 void encoder::EncPin(byte pinA , byte pinB){
-  EncA = pinA;
-  EncB = pinB;
-  pinMode(EncA, INPUT_PULLUP);
-  pinMode(EncB, INPUT_PULLUP);
+  EncA = &pinA;
+  EncB = &pinB;
+  pinMode(*EncA, INPUT_PULLUP);
+  pinMode(*EncB, INPUT_PULLUP);
   }
 
 volatile void encoder::EncCount(){

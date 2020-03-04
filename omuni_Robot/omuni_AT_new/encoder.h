@@ -10,8 +10,8 @@ class encoder {
     
   private:
 
-    byte EncA;
-    byte EncB;
+    byte *EncA;
+    byte *EncB;
     volatile int EncState;
     
 };
