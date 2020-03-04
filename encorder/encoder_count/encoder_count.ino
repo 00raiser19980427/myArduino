@@ -12,7 +12,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ENC_A), ENC_READ, CHANGE);
   attachInterrupt(digitalPinToInterrupt(ENC_B), ENC_READ, CHANGE);
  
-  Serial.begin(38400);
+  Serial.begin(250000);
 }
  
  
