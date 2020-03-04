@@ -8,9 +8,13 @@
 #define KI 1200
 #define KD 0.003
 
-#define accSafety 3 //1~3 safe , 4~6 not safe , 7~ Danger
+#define accSafety 2 //1~2 safe , 2.5~ Danger
 
-
+#define gearRatio 4.333333333333333 // 13:3
+#define encPulse 500 
+#define pi 3.141592653589793238
+//double changeToAngV  = (gearRatio * encPulse )/(pi*500) ; // (gearRatio * encPulse * 4 )/(2*pi*1000)
+double changeToAngV = 5.517371360519038 ;
 
 int pos;
 volatile int v_print; 
@@ -101,8 +105,11 @@ float PID(float measured,float target){
   return PID_output;
 }
 
+
 float velocity_pre = 0;
+
 float inputMotor( float velocity){
+  velocity = velocity * (float)changeToAngV;
   if(velocity >= 0){
     if(velocity - velocity_pre > accSafety){
       velocity = velocity_pre;
@@ -124,11 +131,11 @@ void loop() {
     motor(PID_output);
     if(mainflag){
      mainflag = false;
-     Serial.println(v_print);
+     Serial.println(v_print / (float)changeToAngV);
     }
     if(PIDflag){
      PIDflag = false;
-     PID(v_print , inputMotor(100));
+     PID(v_print , inputMotor(10));   // [rad/s]
     } 
   }
 }
