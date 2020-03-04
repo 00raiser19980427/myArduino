@@ -8,6 +8,8 @@
 #define KI 1200
 #define KD 0.003
 
+#define accSafety 3 //1~3 safe , 4~6 not safe , 7~ Danger
+
 
 
 int pos;
@@ -61,11 +63,13 @@ void setup() {
 
   pinMode(11,OUTPUT);//ボード内側のpwmピン
   pinMode(12,OUTPUT);//ボード外側のpwmピン
+  analogWriteResolution(11);
   analogWriteResolution(12);
  
   Serial.begin(250000);
   Serial.println("Setup OK!!");
 }
+
 
 void motor(int xx){ 
   if(xx >= 0){
@@ -78,6 +82,9 @@ void motor(int xx){
   analogWrite(12,xx);
   }
 }
+
+
+
 
 float i[2];
 float integral;
@@ -97,15 +104,15 @@ float PID(float measured,float target){
 float velocity_pre = 0;
 float inputMotor( float velocity){
   if(velocity >= 0){
-    if(velocity - velocity_pre > 1){
+    if(velocity - velocity_pre > accSafety){
       velocity = velocity_pre;
-      velocity_pre = velocity_pre  +  1;
+      velocity_pre = velocity_pre  +  accSafety;
     }
   }
   else{
-    if(velocity_pre - velocity > 1){
+    if(velocity_pre - velocity > accSafety){
       velocity = velocity_pre;
-      velocity_pre = velocity_pre  -  1;
+      velocity_pre = velocity_pre  -  accSafety;
     }
   }
   return velocity;
@@ -121,7 +128,7 @@ void loop() {
     }
     if(PIDflag){
      PIDflag = false;
-     PID(v_print , inputMotor(-10));
+     PID(v_print , inputMotor(100));
     } 
   }
 }
